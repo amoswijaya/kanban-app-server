@@ -7,6 +7,7 @@ routes.use(authenticate)
 routes.post('/', TaskController.add)
 routes.get('/', TaskController.getTask)
 routes.put('/:id',authorize ,TaskController.edit)
+routes.get('/:id', authorize, TaskController.getTaskById)
 routes.patch('/:id',authorize ,TaskController.editCategory)
 routes.delete('/:id',authorize ,TaskController.delete)
 

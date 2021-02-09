@@ -40,7 +40,7 @@ class TaskController {
 			return Task.update({title, description, category}, {where:{id: +req.params.id}})
 		})
 		.then(result => {
-			res.status(200).json({msg:'sukses mengupdate'})
+			res.status(200).json({msg:'Successfully update Task'})
 		})
 		.catch((err) => {
 			next(err)
@@ -59,9 +59,19 @@ class TaskController {
 			 return task.save()
 		})
 		.then(result => {
-			res.status(200).json({msg:'sukse update category'})
+			res.status(200).json({msg:'Successfully update Category'})
 		})
 		.catch((err) => {
+			next(err)
+		});
+	}
+
+
+	static getTaskById(req, res, next){
+		Task.findOne({where:{id:+req.params.id}})
+		.then((result) => {
+			res.status(200).json(result)
+		}).catch((err) => {
 			next(err)
 		});
 	}
@@ -70,7 +80,7 @@ class TaskController {
 		Task.destroy({where:{id:+req.params.id}})
 		.then((result) => {
 			if(!result) throw {name: 'customError',code: 404,msg: 'data not found'}
-			res.status(200).json({msg:'suskses menghapus task'})
+			res.status(200).json({msg:'Successfully delete Task'})
 		}).catch((err) => {
 			next(err)
 		});
