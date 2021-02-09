@@ -1,10 +1,13 @@
 const routes = require('express').Router()
 const User = require('./user')
-const Taks = require('./taks')
+
+
+const Task = require('./task')
+
 
 
 routes.use('/users', User)
-routes.use('/taks', Taks)
+routes.use('/tasks', Task)
 
 
 module.exports = routes

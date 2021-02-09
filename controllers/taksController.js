@@ -1,6 +1,7 @@
-const {User,Taks} = require('../models')
+const {User,Task} = require('../models')
 
-class TaksController {
+
+class TaskController {
 	static add(req, res, next) {
 		const {title,description,category} = req.body
 		const data = {
@@ -9,7 +10,7 @@ class TaksController {
 			category,
 			UserId : req.decode.id
 		}
-		Taks.create(data)
+		Task.create(data)
 		.then((result) => {
 			res.status(201).json(result)
 		}).catch((err) => {
@@ -17,8 +18,8 @@ class TaksController {
 		});
 	}
 
-	static getTaks(req, res, next){
-		Taks.findAll()
+	static getTask(req, res, next){
+		Task.findAll()
 		.then((result) => {
 			res.status(200).json(result)
 		}).catch((err) => {
@@ -28,15 +29,15 @@ class TaksController {
 	
 	static edit(req, res, next){
 		const {title, description, category} = req.body
-		Taks.findOne({
+		Task.findOne({
 			where:{
 				id: +req.params.id
 			}
 		})
-		.then((taks) => {
-			if(!taks) throw {name: 'customError',code: 404,msg: 'data not found'}
+		.then((task) => {
+			if(!task) throw {name: 'customError',code: 404,msg: 'data not found'}
 
-			return Taks.update({title, description, category}, {where:{id: +req.params.id}})
+			return Task.update({title, description, category}, {where:{id: +req.params.id}})
 		})
 		.then(result => {
 			res.status(200).json({msg:'sukses mengupdate'})
@@ -47,15 +48,15 @@ class TaksController {
 	}
 
 	static editCategory(req, res, next){
-		Taks.findOne({
+		Task.findOne({
 			where:{
 				id: +req.params.id
 			}
 		})
-		.then((taks) => {
-			if(!taks) throw {name: 'customError',code: 404,msg: 'data not found'}
-			taks.category = req.body.category
-			 return taks.save()
+		.then((task) => {
+			if(!task) throw {name: 'customError',code: 404,msg: 'data not found'}
+			task.category = req.body.category
+			 return task.save()
 		})
 		.then(result => {
 			res.status(200).json({msg:'sukse update category'})
@@ -66,14 +67,14 @@ class TaksController {
 	}
 
 	static delete(req, res, next){
-		Taks.destroy({where:{id:+req.params.id}})
+		Task.destroy({where:{id:+req.params.id}})
 		.then((result) => {
 			if(!result) throw {name: 'customError',code: 404,msg: 'data not found'}
-			res.status(200).json({msg:'suskses menghapus taks'})
+			res.status(200).json({msg:'suskses menghapus task'})
 		}).catch((err) => {
 			next(err)
 		});
 	}
 }
 
-module.exports = TaksController
+module.exports = TaskController
