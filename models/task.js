@@ -15,14 +15,40 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Task.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    category: DataTypes.STRING,
+    title: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'title name cannot be empty'
+        }
+      }
+    },
+    description: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'description cannot be empty'
+        }
+      }
+    },
+    category: {
+      type:DataTypes.STRING,
+      validate:{
+        notEmpty:{
+          msg:'category cannot be empty'
+        }
+      }
+    },
     writtenBy: DataTypes.STRING,
     UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Task',
+    hooks: {
+      beforeCreate:user => {
+        user.writtenBy = user.writtenBy || 'anonymous'
+      }
+    }
   });
   return Task;
 };

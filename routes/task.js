@@ -6,9 +6,9 @@ const authorize = require('../middlewares/authorize')
 routes.use(authenticate)
 routes.post('/', TaskController.add)
 routes.get('/', TaskController.getTask)
-routes.put('/:id', TaskController.edit)
-routes.patch('/:id', TaskController.editCategory)
-routes.delete('/:id', TaskController.delete)
+routes.put('/:id',authorize ,TaskController.edit)
+routes.patch('/:id',authorize ,TaskController.editCategory)
+routes.delete('/:id',authorize ,TaskController.delete)
 
 
 module.exports = routes
