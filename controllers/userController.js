@@ -38,6 +38,57 @@ class UserController {
 			next(err)
 		});
 	}
+
+	static googleloginhandler(req, res, next) {
+		let {id_token} = req.body
+		const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+		let payload = null
+		//console.log(`masukkk====>`)
+	
+		client.verifyIdToken({
+			idToken: id_token,
+			audience: process.env.GOOGLE_CLIENT_ID
+		  })
+		  .then(ticket => {
+			console.log(ticket, 'inih ada di line 53')
+			payload = ticket.getPayload()
+			console.log(payload);
+			return User.findOne({
+			  where: {
+				email: payload.email
+			  }
+			})
+		  })
+		  .then(user => {
+			console.log(user)
+			if (!user) {
+			  //console.log(`masukkk====>`)
+			  return User.create({
+				email: payload.email,
+				password: Math.floor(Math.random() * 1000) + 'iniDariGoogle'
+			  })
+			} else {
+			  return user
+			}
+		  })
+		  .then(user => {
+			let googleSign = {
+			  id: user.id,
+			  email: user.email
+			}
+			let accessToken = generateToken(googleSign)
+			console.log(accessToken, 'token di line 79');
+			return res.status(201).json({
+			  access_token: accessToken
+			})
+		  })
+		  .catch(err => {
+			  console.log(err);
+			next(err)
+		  })
+	
+	  }
+	
 }
 
 module.exports = UserController
