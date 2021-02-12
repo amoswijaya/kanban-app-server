@@ -3,11 +3,12 @@ const {User,Task} = require('../models')
 
 class TaskController {
 	static add(req, res, next) {
-		const {title,description,category} = req.body
+		const {title,description,category,writtenBy} = req.body
 		const data = {
 			title,
 			description,
 			category,
+			writtenBy,
 			UserId : req.decode.id
 		}
 		Task.create(data)
