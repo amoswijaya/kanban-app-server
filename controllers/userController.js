@@ -1,7 +1,7 @@
 const {User} = require('../models')
 const {comparePassword} = require('../helper/bcrypt');
 const {generateToken} = require('../helper/jwt')
-
+const {OAuth2Client} = require('google-auth-library');
 class UserController {
 	static register(req, res, next) {
 		User.create(req.body)
@@ -43,6 +43,7 @@ class UserController {
 
 	static googleloginhandler(req, res, next) {
 		let {id_token} = req.body
+		console.log(id_token);
 		const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 		let payload = null
 		//console.log(`masukkk====>`)

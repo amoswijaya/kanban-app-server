@@ -1,10 +1,12 @@
-require('dotenv').config({path: __dirname + '/.env'})
+if(process.env.NODE_ENV === 'development'){
+    require('dotenv').config({path: __dirname + '/.env'})
+}
 const express = require('express')
 const cors = require('cors')
 const routes = require('./routes')
 const errorHandler = require('./middlewares/errorHandler')
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT||3000
 
 app.use(cors())
 app.use(express.json())
