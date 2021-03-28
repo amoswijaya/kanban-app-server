@@ -4,6 +4,7 @@ const {generateToken} = require('../helper/jwt')
 const {OAuth2Client} = require('google-auth-library');
 class UserController {
 	static register(req, res, next) {
+		console.log(req.body);
 		User.create(req.body)
 			.then((result) => {
 				res.status(201).json({
@@ -26,10 +27,11 @@ class UserController {
 			}
 		})
 		.then((user) => {
+			console.log(user);
 			if(!user) throw {name:'customError', code :401,msg: 'Invalid email or password'}
 			const compare = comparePassword(password, user.password)
+			console.log(compare);
 			if(!compare) throw {name:'customError', code :401,msg: 'Invalid email or password'}
-
 			const accsess_token = generateToken({
 				id:user.id,
 				email:user.email
